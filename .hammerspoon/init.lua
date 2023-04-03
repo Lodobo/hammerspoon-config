@@ -1,6 +1,8 @@
-local super = { 'ctrl', 'cmd' }
-local meta = { 'shift', 'ctrl', 'cmd' }
-local hyper = { 'rightcmd', 'rightalt' }
+local mod1 = {'shift', 'cmd' }
+local mod2 = { 'ctrl', 'cmd' }
+local mod3 = { 'rightcmd', 'rightalt' }
+local mod4 = { 'shift', 'ctrl', 'cmd' }
+
 
 local function focusedWindowAndFrame()
    local window = hs.window.focusedWindow()
@@ -44,36 +46,36 @@ hs.fnutils.each({
    { key = 'E', app = 'CotEditor' },
    { key = 'B', app = 'Firefox' }
 }, function(map)
-   hs.hotkey.bind(super, map.key, function() hs.application.launchOrFocus(map.app) end)
+   hs.hotkey.bind(mod2, map.key, function() hs.application.launchOrFocus(map.app) end)
 end)
 
 -- mapping = {{modifier, key, function}}
 local mappings = {
    -- Create new Finder window in active workspace
-   {hyper, 'F', function() hs.application.find("Finder"):selectMenuItem({"Fichier", "Nouvelle fenêtre Finder"}) end},
+   {mod3, 'F', function() hs.application.find("Finder"):selectMenuItem({"Fichier", "Nouvelle fenêtre Finder"}) end},
    -- Create new terminal window in active workspace
-   {meta, 'T', newTerminal},
-   {{'shift', 'cmd' }, 'return', newTerminal},
+   {mod4, 'T', newTerminal},
+   {mod1, 'return', newTerminal},
    -- Move window to the left
-   {super, 'H', function() moveWindow(0, 0, 0.5, 1) end},
-   {super, 'left', function() moveWindow(0, 0, 0.5, 1) end},
+   {mod2, 'H', function() moveWindow(0, 0, 0.5, 1) end},
+   {mod2, 'left', function() moveWindow(0, 0, 0.5, 1) end},
    -- Move window to the right
-   {super, 'L', function() moveWindow(0.5, 0, 0.5, 1) end},
-   {super, 'right', function() moveWindow(0.5, 0, 0.5, 1) end},
+   {mod2, 'L', function() moveWindow(0.5, 0, 0.5, 1) end},
+   {mod2, 'right', function() moveWindow(0.5, 0, 0.5, 1) end},
    -- Move window to upper right
-   {super, 'I', function() moveWindow(0.5, 0, 0.5, 0.5) end},
+   {mod2, 'I', function() moveWindow(0.5, 0, 0.5, 0.5) end},
    -- Move window to lower right
-   {super, 'K', function() moveWindow(0.5, 0.5, 0.5, 0.5) end},
+   {mod2, 'K', function() moveWindow(0.5, 0.5, 0.5, 0.5) end},
    -- Move window to upper left
-   {super, 'U', function() moveWindow(0, 0, 0.5, 0.5) end},
+   {mod2, 'U', function() moveWindow(0, 0, 0.5, 0.5) end},
    -- Move window to lower left
-   {super, 'J', function() moveWindow(0, 0.5, 0.5, 0.5) end},
+   {mod2, 'J', function() moveWindow(0, 0.5, 0.5, 0.5) end},
    -- Maximize window
-   {super, 'P', function() hs.window.focusedWindow():maximize() end},
-   {super, 'up', function() hs.window.focusedWindow():maximize() end},
+   {mod2, 'P', function() hs.window.focusedWindow():maximize() end},
+   {mod2, 'up', function() hs.window.focusedWindow():maximize() end},
    -- Almost maximized window
-   {super, 'M', centeredWindow },
-   {super, 'down', centeredWindow }
+   {mod2, 'M', centeredWindow },
+   {mod2, 'down', centeredWindow }
 }
 
 for i, mapping in ipairs(mappings) do
