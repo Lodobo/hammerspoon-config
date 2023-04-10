@@ -3,8 +3,16 @@ local mod2 = { 'ctrl', 'cmd' }
 local mod3 = { 'rightcmd', 'rightalt' }
 local mod4 = { 'shift', 'ctrl', 'cmd' }
 
+-- window switcher. Source : https://github.com/dmgerman/hs_select_window.spoon
+hs.loadSpoon("hs_select_window")
 
-local function focusedWindowAndFrame()
+local SWbindings = {
+   all_windows =  { {'alt'}, 'space'},
+   app_windows =  { {'alt', 'shift'}, 'space'}
+}   
+spoon.hs_select_window:bindHotkeys(SWbindings)
+
+local function getWindowInfo()
    local window = hs.window.focusedWindow()
    local windowFrame = window:frame()
    local screenFrame = window:screen():frame()
@@ -12,7 +20,7 @@ local function focusedWindowAndFrame()
 end
 
 local function moveWindow(X, Y, W, H)
-   local window, windowFrame, screenFrame = focusedWindowAndFrame()
+   local window, windowFrame, screenFrame = getWindowInfo()
    windowFrame.x = screenFrame.x + (screenFrame.w * X)
    windowFrame.y = screenFrame.y + (screenFrame.h * Y)
    windowFrame.w = screenFrame.w * W
@@ -21,7 +29,7 @@ local function moveWindow(X, Y, W, H)
 end
 
 local function centeredWindow()
-   local window, windowFrame, screenFrame = focusedWindowAndFrame()
+   local window, windowFrame, screenFrame = getWindowInfo()
    windowFrame.w = screenFrame.w * 0.8
    windowFrame.h = screenFrame.h * 0.8
    windowFrame.x = screenFrame.x + (screenFrame.w - windowFrame.w) / 2
