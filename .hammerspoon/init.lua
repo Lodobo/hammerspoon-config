@@ -1,5 +1,7 @@
 require "lib"
 
+-- TODO: change window management for use with hs.grid
+
 local mod1 = { 'shift', 'cmd' }
 local mod2 = { 'ctrl', 'cmd' }
 local mod3 = { 'rightcmd', 'rightalt' }
@@ -14,7 +16,7 @@ local mod7 = { 'shift', 'fn' }
 -- Caffeine: https://github.com/IntelliScape/caffeine/
 -- hs.application.launchOrFocus('Caffeine')
 
-local function move_window(X, Y, W, H)
+function move_window(X, Y, W, H)
   local window = hs.window.focusedWindow()
   local screenFrame = window:screen():frame()
   window:setFrame({
@@ -22,18 +24,16 @@ local function move_window(X, Y, W, H)
     y = screenFrame.y + screenFrame.h * Y,
     w = screenFrame.w * W,
     h = screenFrame.h * H
-  }, 0)
+  })
 end
 
-local launch_alacritty = function() hs.application.launchOrFocus('Alacritty') end
-
-local new_alacritty_window = function()
-  local application = hs.application.get('Alacritty')
+local new_terminal_window = function()
+  local application = hs.application.get('Terminal')
   if application then
     application:activate(false)
     hs.eventtap.keyStroke({ 'cmd' }, 'N')
   else
-    hs.application.launchOrFocus('Alacritty')
+    hs.application.launchOrFocus('Terminal')
   end
 end
 
@@ -47,10 +47,13 @@ local mappings = {
 
   -- Launch Apps
   { mod2, 'C',      function() hs.application.launchOrFocus('Visual Studio Code') end },
-  { mod2, 'E',      function() hs.application.launchOrFocus('CotEditor') end },
+  { mod2, 'E',      function() hs.application.launchOrFocus('Cot Editor') end },
   { mod2, 'B',      function() hs.application.launchOrFocus('Firefox') end },
-  { mod2, 'T',      new_alacritty_window },
-  { mod1, 'return', new_alacritty_window },
+  
+  -- cmd+return: launch or focus
+  -- shift+cmd+ return: new tab
+  { 'cmd', 'return', function() hs.application.launchOrFocus('Terminal') end  },
+  { mod1, 'return',  new_terminal_window},
 
   -- Toggle Dark mode
   { mod5, 'T',      toggle_dark_mode },
